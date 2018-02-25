@@ -35,6 +35,10 @@ public class JobMatchingService {
     }
 
     private List<JobDetails> aggregateJobs(WorkerDetails workerDetails) {
-        return jobSearchAggregationRepository.aggregate(workerDetails);
+        List<JobDetails>  matchedJobs = jobSearchAggregationRepository.aggregate(workerDetails);
+        if(matchedJobs == null) {
+            throw new NotFoundException(workerDetails.getUserId(), "No matching job details found for worker " + workerDetails.getUserId());
+        }
+        return matchedJobs;
     }
 }
